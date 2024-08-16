@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import Chart from "react-apexcharts";
 import Papa from 'papaparse';
 
-class Heatmap extends React.Component {
+class Heatmap extends Component {
   constructor(props) {
     super(props);
 

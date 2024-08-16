@@ -1,16 +1,16 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Heatmap from './pages/Heatmap.jsx';
-import Map from './pages/Map.jsx';
+import Map from './pages/map.jsx';
 
 function App (){
   return (
     <Router>
         <>
-            <nav>
-                <ul>
-                    <li><Link className="link-btn" to="/">Heatmap</Link></li>
-                    <li><Link className="link-btn" to="/map">Map</Link></li>
+            <nav className='navbar'>
+                <ul className='navBar-ul'>
+                    <li className='navBar-ul-li'><Link className="link-btn" to="/">Heatmap</Link></li>
+                    <li className='navBar-ul-li'><Link className="link-btn" to="/map">Mapa Interactivo</Link></li>
                 </ul>
             </nav>
             <main>

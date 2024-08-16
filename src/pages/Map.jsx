@@ -42,10 +42,10 @@ function Map() {
 
     return (
         <>
-        <main id="map">
+        <article id="map">
             <MapContainer 
-                center={[-34.60358867783092, -58.381559691538015]} 
-                zoom={13} 
+                center={[0, 0]} 
+                zoom={2} 
                 scrollWheelZoom={true}
                 style={{ height: "100%", width: "100%" }}
             >
@@ -64,26 +64,27 @@ function Map() {
             </div>
 
             </MapContainer>
-        </main>
+        </article>
 
         <article>
+            
             <section className='input-marker-container dropdown-menu'>
-                <input type="number" id="yCoordinate" onChange={handleInputChangeMarker}/>
-                <input type="number" id="xCoordinate" onChange={handleInputChangeMarker}/>
-                <button onClick={addMarker}>Agregar Marcador</button>
+                <input className='map-input' type="number" id="yCoordinate" placeholder='Coord x' onChange={handleInputChangeMarker}/>
+                <input className='map-input' type="number" id="xCoordinate" placeholder='Coord y'onChange={handleInputChangeMarker}/>
+                <button className="map-input-btn" onClick={addMarker}>Agregar Pin</button>
             </section>
 
             <section className='input-polygon-container dropdown-menu'>
-                <input type="number" id="yPolygon1" onChange={handleInputChangePolygon}/>
-                <input type="number" id="xPolygon1" onChange={handleInputChangePolygon}/>
+                <input className='map-input' type="number" id="yPolygon1" placeholder='Coord x 1' onChange={handleInputChangePolygon}/>
+                <input className='map-input' type="number" id="xPolygon1" placeholder='Coord y 1' onChange={handleInputChangePolygon}/>
 
-                <input type="number" id="yPolygon2" onChange={handleInputChangePolygon}/>
-                <input type="number" id="xPolygon2" onChange={handleInputChangePolygon}/>
+                <input className='map-input' type="number" id="yPolygon2" placeholder='Coord x 2' onChange={handleInputChangePolygon}/>
+                <input className='map-input' type="number" id="xPolygon2" placeholder='Coord y 2' onChange={handleInputChangePolygon}/>
 
-                <input type="number" id="yPolygon3" onChange={handleInputChangePolygon}/>
-                <input type="number" id="xPolygon3" onChange={handleInputChangePolygon}/>
-
-                <button id="polygon-btn" onClick={addPolygon}>Agregar Polígono</button>
+                <input className='map-input' type="number" id="yPolygon3" placeholder='Coord x 3' onChange={handleInputChangePolygon}/>
+                <input className='map-input' type="number" id="xPolygon3" placeholder='Coord y 3' onChange={handleInputChangePolygon}/>
+                
+                <button id='polygon-btn' className="map-input-btn" onClick={addPolygon}>Agregar Polígono</button>
             </section>
         </article>
         </>
