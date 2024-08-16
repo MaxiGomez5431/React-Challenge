@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Heatmap from './pages/Heatmap.jsx';
-import Map from './pages/map.jsx';
+import Map from './pages/Map.jsx';
 
 function App (){
   return (
