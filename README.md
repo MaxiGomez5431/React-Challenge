@@ -29,7 +29,13 @@ npm run dev
 - The heatmap is displayed on the main page. You can compare the data with the source [here](https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/multivariate.csv).
 - The data will not be downloaded more than once, as the page uses routing to manage this.
 
-## Interactive map:
+### Interactive map:
 
 - You can zoom in and out using the mouse scroll.
-- To add pins and polygons, use the corresponding form to set the coordinates.
+- To add pins and polygons, use the corresponding form to set the coordinates, here are a few examples:
+
+| Location            | Type     | y1   | x1  | y2  | x2  | y3  | x3  |
+|---------------------|----------|------|-----|-----|-----|-----|-----|
+| Buenos Aires        | Pin      | -35  | -58 |     |     |     |     |
+| Colombia            | Polygon  | -1   | -70 | 2   | -80 | 10  | 75  |
+
