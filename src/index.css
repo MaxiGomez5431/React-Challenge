@@ -69,51 +69,7 @@ main {
   width: 700px;
 }
 
-.input-marker-container{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr;
-}
-
-.input-polygon-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-
-}
-
-#yPolygon1 { grid-area: 1 / 1 / 2 / 2; }
-#xPolygon1{ grid-area: 1 / 2 / 2 / 3; }
-#yPolygon2 { grid-area: 2 / 1 / 3 / 2; }
-#xPolygon2 { grid-area: 2 / 2 / 3 / 3; }
-#yPolygon3 { grid-area: 3 / 1 / 4 / 2; }
-#xPolygon3 { grid-area: 3 / 2 / 4 / 3; }
-#polygon-btn { grid-area: 1 / 3 / 4 / 4; }
-
-.dropdown-menu {
-  width: 500px;
-  margin: 30px;
-  
-  place-items: center;
-  border: 1px solid black;
-  border-radius: 7px;
-  padding: 5px;
-  box-shadow: 3px 3px 2px 1px var(--dark-color-trasnparent);
-}
-
-.map-input {
-  width: 100px;
-  height: 15px;
-  padding: 10px;
-  margin: 5px;
-
-  border: 2px solid var(--secondary-color);
-  border-radius: 5px;
-  font-size: 16px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.map-input-btn {
+#change-click-mode {
   width: 150px;
   height: 60px;
   background-color: var(--secondary-color);
@@ -125,7 +81,7 @@ main {
   transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
-.map-input-btn:hover {
+#change-click-mode:hover {
   background-color: #2980b9; 
   transform: translateY(-2px); 
 }

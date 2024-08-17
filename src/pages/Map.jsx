@@ -1,33 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Polygon, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 function Map() {
     const [markerCoordinates, setMarkerCoordinates] = useState({
-        yCoordinate: 0,
-        xCoordinate: 0,
+        yCoordinate: null, xCoordinate: null,
     });
     const [polygonCoordinate, setPolygonCoordinate] = useState({
-        yPolygon1: 0,
-        xPolygon1: 0,
-        yPolygon2: 0,
-        xPolygon2: 0,
-        yPolygon3: 0,
-        xPolygon3: 0,
+        yPolygon1: null, xPolygon1: null,
+        yPolygon2: null, xPolygon2: null,
+        yPolygon3: null, xPolygon3: null,
     });
     const [mapPointers, setMapPointers] = useState([]);
 
-    const handleInputChangeMarker = (inputEvent) => {
-        const newValue = parseFloat(inputEvent.target.value) || 0;
-        const markerId = inputEvent.target.id;
-        setMarkerCoordinates({ ...markerCoordinates, [markerId]: newValue });
-    };
-
-    const handleInputChangePolygon = (inputEvent) => {
-        const newValue = parseFloat(inputEvent.target.value) || 0;
-        const polygonId = inputEvent.target.id;
-        setPolygonCoordinate({ ...polygonCoordinate, [polygonId]: newValue });
-    };
+    const [clickMode, setClickMode] = useState(false)
 
     const addMarker = () => {
         const purpleOptions = { color: 'red' };
@@ -37,6 +23,16 @@ function Map() {
             <Marker pathOptions={purpleOptions} position={[markerCoordinates.yCoordinate, markerCoordinates.xCoordinate]} key={mapPointers.length} />
         ]);
     };
+
+    const setPolygonByStep = (arrayLatLng) => {
+        if (polygonCoordinate.yPolygon1 === null && polygonCoordinate.xPolygon1 === null) {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon1: arrayLatLng[0], xPolygon1: arrayLatLng[1] });
+        } else if (polygonCoordinate.yPolygon2 === null && polygonCoordinate.xPolygon2 === null) {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon2: arrayLatLng[0], xPolygon2: arrayLatLng[1] });
+        } else {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon3: arrayLatLng[0], xPolygon3: arrayLatLng[1] });
+        }
+    }
 
     const addPolygon = () => {
         const polygonPosition = [
@@ -52,20 +48,47 @@ function Map() {
     };
 
     function MouseCoordinates() {
+        let arrayCoordinates = [0,0]
+
         useMapEvents({
             mousemove: (event) => {
                 const { lat, lng } = event.latlng;
-                setMarkerCoordinates({
-                    yCoordinate: lat,
-                    xCoordinate: lng,
-                });
+                arrayCoordinates = [lat, lng]
+                
             },
             click: () => {
-                addMarker()
+                if (clickMode){
+                    setPolygonByStep(arrayCoordinates)
+                } else {
+                    setMarkerCoordinates({
+                        yCoordinate: arrayCoordinates[0],
+                        xCoordinate: arrayCoordinates[1],
+                    })
+                }
             },
-        });
+        }); 
         return null;
     }
+
+    useEffect(() => {
+        if(polygonCoordinate.yPolygon3 !== null) {
+            addPolygon()
+            setPolygonCoordinate({
+                yPolygon1: null, xPolygon1: null,
+                yPolygon2: null, xPolygon2: null,
+                yPolygon3: null, xPolygon3: null,
+            })
+        }
+    }, [polygonCoordinate])
+
+    useEffect(() => {
+        if(markerCoordinates.yCoordinate !== null) {
+            addMarker()
+            setMarkerCoordinates({
+                yCoordinate: null, xCoordinate: null,
+            })
+        }
+    }, [markerCoordinates])
 
     return (
         <>
@@ -91,26 +114,8 @@ function Map() {
                 </MapContainer>
             </article>
 
-            <article>
-                <section className='input-marker-container dropdown-menu'>
-                    <input className='map-input' type="number" id="yCoordinate" placeholder='Coord x' onChange={handleInputChangeMarker} />
-                    <input className='map-input' type="number" id="xCoordinate" placeholder='Coord y' onChange={handleInputChangeMarker} />
-                    <button className="map-input-btn" onClick={addMarker}>Agregar Pin</button>
-                </section>
+            <button id="change-click-mode" onClick={() => setClickMode(!clickMode)}>{clickMode ? "Colocando Polígonos" : "Colocando Pines"}</button>
 
-                <section className='input-polygon-container dropdown-menu'>
-                    <input className='map-input' type="number" id="yPolygon1" placeholder='Coord x 1' onChange={handleInputChangePolygon} />
-                    <input className='map-input' type="number" id="xPolygon1" placeholder='Coord y 1' onChange={handleInputChangePolygon} />
-
-                    <input className='map-input' type="number" id="yPolygon2" placeholder='Coord x 2' onChange={handleInputChangePolygon} />
-                    <input className='map-input' type="number" id="xPolygon2" placeholder='Coord y 2' onChange={handleInputChangePolygon} />
-
-                    <input className='map-input' type="number" id="yPolygon3" placeholder='Coord x 3' onChange={handleInputChangePolygon} />
-                    <input className='map-input' type="number" id="xPolygon3" placeholder='Coord y 3' onChange={handleInputChangePolygon} />
-
-                    <button id='polygon-btn' className="map-input-btn" onClick={addPolygon}>Agregar Polígono</button>
-                </section>
-            </article>
         </>
     );
 }
