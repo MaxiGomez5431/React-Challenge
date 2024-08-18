@@ -32,10 +32,5 @@ npm run dev
 ### Interactive map:
 
 - You can zoom in and out using the mouse scroll.
-- To add pins and polygons, use the corresponding form to set the coordinates, here are a few examples:
-
-| Location            | Type     | y1   | x1  | y2  | x2  | y3  | x3  |
-|---------------------|----------|------|-----|-----|-----|-----|-----|
-| Buenos Aires        | Pin      | -35  | -58 |     |     |     |     |
-| Colombia            | Polygon  | -1   | -70 | 2   | -80 | 10  | 75  |
-
+- To add pins click on the map.
+- To add a polygon, press the change mode button and click 3 times on the map.
