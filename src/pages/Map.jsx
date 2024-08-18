@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Polygon, useMapEvents } from 'react-leaflet';
+import { customBlueIcon, customRedIcon } from '../assets/customIcons.js'
 import 'leaflet/dist/leaflet.css';
 
 function Map() {
@@ -12,27 +13,15 @@ function Map() {
         yPolygon3: null, xPolygon3: null,
     });
     const [mapPointers, setMapPointers] = useState([]);
-
     const [clickMode, setClickMode] = useState(false)
+    const [areRedMarkersOnMap, setAreRedMarkersOnMap] = useState(false)
 
-    const addMarker = () => {
-        const purpleOptions = { color: 'red' };
-
+    const addMarker = (icon) => {
         setMapPointers([
             ...mapPointers,
-            <Marker pathOptions={purpleOptions} position={[markerCoordinates.yCoordinate, markerCoordinates.xCoordinate]} key={mapPointers.length} />
+            <Marker position={[markerCoordinates.yCoordinate, markerCoordinates.xCoordinate]} key={mapPointers.length} icon={icon} />
         ]);
     };
-
-    const setPolygonByStep = (arrayLatLng) => {
-        if (polygonCoordinate.yPolygon1 === null && polygonCoordinate.xPolygon1 === null) {
-            setPolygonCoordinate({ ...polygonCoordinate, yPolygon1: arrayLatLng[0], xPolygon1: arrayLatLng[1] });
-        } else if (polygonCoordinate.yPolygon2 === null && polygonCoordinate.xPolygon2 === null) {
-            setPolygonCoordinate({ ...polygonCoordinate, yPolygon2: arrayLatLng[0], xPolygon2: arrayLatLng[1] });
-        } else {
-            setPolygonCoordinate({ ...polygonCoordinate, yPolygon3: arrayLatLng[0], xPolygon3: arrayLatLng[1] });
-        }
-    }
 
     const addPolygon = () => {
         const polygonPosition = [
@@ -40,12 +29,25 @@ function Map() {
             [polygonCoordinate.yPolygon2, polygonCoordinate.xPolygon2],
             [polygonCoordinate.yPolygon3, polygonCoordinate.xPolygon3],
         ];
-        const purpleOptions = { color: 'red' };
         setMapPointers([
             ...mapPointers,
-            <Polygon pathOptions={purpleOptions} positions={polygonPosition} key={mapPointers.length} />
+            <Polygon pathOptions={{ color: 'red' }} positions={polygonPosition} key={mapPointers.length} />
         ]);
     };
+
+    const setPolygonByStep = (arrayLatLng) => {
+        if (polygonCoordinate.yPolygon1 === null && polygonCoordinate.xPolygon1 === null) {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon1: arrayLatLng[0], xPolygon1: arrayLatLng[1] });
+            setMarkerCoordinates({ yCoordinate: arrayLatLng[0], xCoordinate: arrayLatLng[1] })
+            setAreRedMarkersOnMap(true)
+        } else if (polygonCoordinate.yPolygon2 === null && polygonCoordinate.xPolygon2 === null) {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon2: arrayLatLng[0], xPolygon2: arrayLatLng[1] });
+            setMarkerCoordinates({ yCoordinate: arrayLatLng[0], xCoordinate: arrayLatLng[1] })
+        } else {
+            setPolygonCoordinate({ ...polygonCoordinate, yPolygon3: arrayLatLng[0], xPolygon3: arrayLatLng[1] });
+            setAreRedMarkersOnMap(false)
+        }
+    }
 
     function MouseCoordinates() {
         let arrayCoordinates = [0,0]
@@ -70,20 +72,33 @@ function Map() {
         return null;
     }
 
+    const removeRedMarkers = () => {
+        let actualMapPointers = mapPointers
+        actualMapPointers.splice(actualMapPointers.length - 2, 2)
+        setMapPointers(actualMapPointers)
+        addPolygon()
+    }
+
     useEffect(() => {
         if(polygonCoordinate.yPolygon3 !== null) {
-            addPolygon()
+            removeRedMarkers()
             setPolygonCoordinate({
                 yPolygon1: null, xPolygon1: null,
                 yPolygon2: null, xPolygon2: null,
                 yPolygon3: null, xPolygon3: null,
             })
+            
+        } else if (polygonCoordinate.yPolygon1 !== null || polygonCoordinate.yPolygon2 !== null) {
+            addMarker(customRedIcon)
+            setMarkerCoordinates({
+                yCoordinate: null, xCoordinate: null,
+            })
         }
     }, [polygonCoordinate])
 
     useEffect(() => {
-        if(markerCoordinates.yCoordinate !== null) {
-            addMarker()
+        if(markerCoordinates.yCoordinate !== null && !clickMode) {
+            addMarker(customBlueIcon)
             setMarkerCoordinates({
                 yCoordinate: null, xCoordinate: null,
             })
@@ -114,8 +129,15 @@ function Map() {
                 </MapContainer>
             </article>
 
-            <button id="change-click-mode" onClick={() => setClickMode(!clickMode)}>{clickMode ? "Colocando Polígonos" : "Colocando Pines"}</button>
+            <div id="mode-container">
+                <button id="change-click-mode" onClick={() => {
+                    if (!areRedMarkersOnMap) {
+                        setClickMode(!clickMode)
+                    }
 
+                }}>Cambiar modo</button>
+                <p id="text-click-mode">{clickMode ? "Colocando polígonos, coloca 3 coordenadas para poder colocar un polígono." : "Colocando pines, haz click en el mapa para colocar un pin."}</p>
+            </div>
         </>
     );
 }

@@ -55,7 +55,7 @@
 
 main {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -74,6 +74,7 @@ main {
   height: 60px;
   background-color: var(--secondary-color);
   color: white;
+  margin: 10px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -84,4 +85,19 @@ main {
 #change-click-mode:hover {
   background-color: #2980b9; 
   transform: translateY(-2px); 
+}
+
+#text-click-mode {
+  margin: 10px;
+}
+
+#mode-container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid #2980b9;
 }
